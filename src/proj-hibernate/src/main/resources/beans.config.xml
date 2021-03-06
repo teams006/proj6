@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config></context:annotation-config>
+	<context:component-scan base-package="model"></context:component-scan>
+	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg>
+			<bean class="com.zaxxer.hikari.HikariConfig">
+				<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+				<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/java"></property>
+				<property name="username" value="root"></property>
+				<property name="password" value="123456"></property>
+				<property name="dataSourceProperties">
+					<props>
+						<prop key="cachePrepStmts">true</prop>
+						<prop key="prepStmtCacheSize">250</prop>
+						<prop key="prepStmtCacheSqlLimit">2048</prop>
+					</props>
+				</property>
+			</bean>
+		</constructor-arg>
+	</bean>
+
+	
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+        	<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.current_session_context_class">thread</prop>
+			</props>		
+		</property>
+		
+		<property name="annotatedClasses">
+			<array>
+				<value>model.CustomerBean</value>
+				<value>model.ProductBean</value>
+			</array>
+		</property>
+			
+		
+		
+	</bean>
+</beans>
